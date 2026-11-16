@@ -9,7 +9,12 @@ import com.example.polokwanevetclinic.data.local.PetOwnerDao
 import com.example.polokwanevetclinic.data.local.PetOwnerEntity
 import com.example.polokwanevetclinic.data.local.TreatmentDao
 import com.example.polokwanevetclinic.data.local.toEntity
+import com.example.polokwanevetclinic.data.remote.AnimalRequestApi
 import com.example.polokwanevetclinic.data.remote.ApiService
+import com.example.polokwanevetclinic.data.remote.AppointmentRequestApi
+import com.example.polokwanevetclinic.data.remote.InvoiceRequestApi
+import com.example.polokwanevetclinic.data.remote.PetOwnerRequestApi
+import com.example.polokwanevetclinic.data.remote.TreatmentRequestApi
 import com.example.polokwanevetclinic.model.Animal
 import com.example.polokwanevetclinic.model.Appointment
 import com.example.polokwanevetclinic.model.ClinicUser
@@ -128,7 +133,14 @@ class PetOwnerRepository(
     suspend fun addOwner(owner: PetOwner) {
         ownerDao.insertOwner(owner.toEntity())
         try {
-            apiService.addOwner(owner)
+            val req = PetOwnerRequestApi(
+                fullName = owner.fullName,
+                email = owner.email,
+                phone = owner.phone,
+                address = owner.address,
+                registeredDate = owner.registeredDate
+            )
+            apiService.createPetOwner(req)
         } catch (_: Exception) {
             // Local DB already updated
         }
@@ -155,7 +167,16 @@ class AnimalRepository(
     suspend fun addAnimal(animal: Animal) {
         animalDao.insertAnimal(animal.toEntity())
         try {
-            apiService.addAnimal(animal)
+            val req = AnimalRequestApi(
+                ownerId = animal.ownerId.toIntOrNull() ?: 1,
+                name = animal.name,
+                species = animal.species,
+                breed = animal.breed,
+                dateOfBirthOrAge = animal.dateOfBirthOrAge,
+                sex = animal.sex,
+                medicalNotes = animal.medicalNotes
+            )
+            apiService.createAnimal(req)
         } catch (_: Exception) {
             // Local DB updated
         }
@@ -182,7 +203,16 @@ class AppointmentRepository(
     suspend fun scheduleAppointment(appointment: Appointment) {
         appointmentDao.insertAppointment(appointment.toEntity())
         try {
-            apiService.scheduleAppointment(appointment)
+            val req = AppointmentRequestApi(
+                animalId = appointment.animalId.toIntOrNull() ?: 1,
+                ownerId = appointment.ownerId.toIntOrNull() ?: 1,
+                appointmentDate = appointment.appointmentDate,
+                timeSlot = appointment.timeSlot,
+                reason = appointment.reason,
+                status = appointment.status.name,
+                vetName = appointment.vetName
+            )
+            apiService.createAppointment(req)
         } catch (_: Exception) {
             // Local DB updated
         }
@@ -209,7 +239,15 @@ class TreatmentRepository(
     suspend fun recordTreatment(treatment: Treatment) {
         treatmentDao.insertTreatment(treatment.toEntity())
         try {
-            apiService.recordTreatment(treatment)
+            val req = TreatmentRequestApi(
+                animalId = treatment.animalId.toIntOrNull() ?: 1,
+                vetName = treatment.vetName,
+                diagnosis = treatment.diagnosis,
+                treatmentDescription = treatment.treatmentDescription,
+                cost = treatment.cost,
+                treatmentDate = treatment.date
+            )
+            apiService.createTreatment(req)
         } catch (_: Exception) {
             // Local DB updated
         }
@@ -236,7 +274,14 @@ class InvoiceRepository(
     suspend fun createInvoice(invoice: Invoice) {
         invoiceDao.insertInvoice(invoice.toEntity())
         try {
-            apiService.createInvoice(invoice)
+            val req = InvoiceRequestApi(
+                ownerId = invoice.ownerId.toIntOrNull() ?: 1,
+                animalName = invoice.animalName,
+                invoiceDate = invoice.invoiceDate,
+                totalAmount = invoice.totalAmount,
+                status = invoice.status.name
+            )
+            apiService.createInvoice(req)
         } catch (_: Exception) {
             // Local DB updated
         }

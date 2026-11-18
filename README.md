@@ -535,9 +535,8 @@ The MySQL database and Spring Boot backend have been created and tested, while t
 
 The project provides a foundation that can be improved and expanded to support the daily activities of a veterinary clinic.
 
----
 
-**Project Repository:** https://github.com/mutshidzi-nelufule/Polokwane-Veterinary-Clinic
+
 
 **Project:** Polokwane Veterinary Clinic Management System
 

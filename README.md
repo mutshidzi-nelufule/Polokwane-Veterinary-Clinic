@@ -470,7 +470,7 @@ The demonstration should include:
 - Current development progress.
 - Challenges and future improvements.
 
-**Video presentation link:** [Insert YouTube or Google Drive link here]
+**Video presentation link:** https://youtu.be/Jh0mgA4jE9o?si=DPdFh2PVeMAx6JH4 / https://youtube.com/shorts/W8Rx-pt5jZM?si=OD3inXAEU56IKRSD
 
 ## 15. Release Notes
 
